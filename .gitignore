@@ -1,12 +1,21 @@
+# Python
 __pycache__/
 *.pyc
-.pytest_cache/
-
-.env
-backend/.env
-
+.venv/
 venv/
-backend/venv/
 
-.idea/
+# Database
+*.db
+
+# Node
+frontend/node_modules/
+frontend/dist/
+
+# Environment
+.env
+
+# VS Code
 .vscode/
+
+# OS
+.DS_Store
