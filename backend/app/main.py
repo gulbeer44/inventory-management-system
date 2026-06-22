@@ -1,8 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.core.database import Base
-from app.core.database import engine
+from app.core.database import Base, engine
 
 import app.models
 
@@ -20,17 +19,18 @@ app = FastAPI(
 )
 
 # CORS Configuration
+origins = [
+    "http://localhost:5173",
+    "http://localhost:5174",
+    "http://localhost:4173",
+    "https://inventory-management-system-omega-lilac.vercel.app",
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:5173",
-        "http://localhost:5174",
-        "http://localhost:4173",
-        "https://inventory-management-system-omega-lilac.vercel.app",
-    ],
-    allow_origin_regex=r"https://.*\.vercel\.app",
+    allow_origins=origins,
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     allow_headers=["*"],
 )
 
@@ -40,9 +40,15 @@ app.include_router(product_router)
 app.include_router(customer_router)
 app.include_router(order_router)
 
-
 @app.get("/")
 def root():
     return {
         "message": "Inventory Management System API"
+    }
+
+@app.get("/health")
+def health_check():
+    return {
+        "status": "healthy",
+        "service": "inventory-management-api"
     }
